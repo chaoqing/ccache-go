@@ -1,0 +1,3 @@
+[submodule "ccache"]
+	path = ccache-c
+	url = https://github.com/ccache/ccache
