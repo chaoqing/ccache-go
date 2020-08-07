@@ -1,12 +1,17 @@
 package main
 
-// #cgo CPPFLAGS: -I./
 // #cgo LDFLAGS: -L./ -lccache -lz -lm
-// #include <main.h>
+//
+// #include <stdlib.h>
+// static void* alloc_string_slice(int len){
+// return malloc(sizeof(char*)*len);
+// }
+//
+// int ccache_main(int argc, char *argv[]);
 import "C"
 
 import (
-	"fmt"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"unsafe"
 )
@@ -18,7 +23,7 @@ const(
 func cMain(args []string){
 	argc:=C.int(len(args))
 
-	fmt.Printf("Got %v args: %v\n", argc, args)
+	log.Debugf("Got %v args: %v\n", argc, args)
 
 	argv:=(*[maxArgsLen]*C.char)(C.alloc_string_slice(argc))
 	defer C.free(unsafe.Pointer(argv))
