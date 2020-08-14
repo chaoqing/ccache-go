@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"unsafe"
 )
 
@@ -98,6 +99,9 @@ func PrepareArgs(origArgs []string) []string {
 	args = append(args, origArgs[0])
 
 	command := filepath.Base(origArgs[0])
+	if command=="ccache" && len(origArgs)>1 && !strings.HasPrefix(origArgs[1], "-"){
+		command = filepath.Base(origArgs[1])
+	}
 	for _, arg := range origArgs[1:]{
 		for _, r := range rules{
 			if r.match(command, arg){
