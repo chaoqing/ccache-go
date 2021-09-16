@@ -28,13 +28,14 @@ func cMain(args []string){
 
 	log.Debugf("Got %v args: %v\n", argc, args)
 
-	argv:=(*[maxArgsLen]*C.char)(C.alloc_string_slice(argc))
+	argv:=(*[maxArgsLen]*C.char)(C.alloc_string_slice(argc+1))
 	defer C.free(unsafe.Pointer(argv))
 
 	for i, arg := range args{
 		argv[i] = C.CString(arg)
 		defer C.free(unsafe.Pointer(argv[i]))
 	}
+	argv[argc] = nil
 
 	C.ccache_main(argc, (**C.char)(unsafe.Pointer(argv)))
 }
